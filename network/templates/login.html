@@ -7,7 +7,7 @@
 <form class="m-4" action="{% url 'login' %}" method="POST">
     {% csrf_token %}
     <h3 class="pb-2">Iniciar sesión</h3>
-    <h5 class="red_message">Error al iniciar</h5>
+    <h5 class="red_message"></h5>
     <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Usuario</label>
         <input type="text" class="form-control" id="exampleInputEmail1" name="username">

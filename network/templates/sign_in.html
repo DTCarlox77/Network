@@ -1,32 +1,35 @@
 {% extends "layouts/base.html" %}
 
+{% block title %}Registro{% endblock %}
+
 {% block content %}
 
-<form class="m-4">
-
+<form class="m-4" action="{% url 'sign_in' %}" method="POST">
+    {% csrf_token %}
     <h3 class="pb-4">Crear cuenta</h3>
+    <h5 class="red_message">{{ mensaje }}</h5>
 
     <div class="mb-3">  
         <div class="col">
-            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Correo electrónico">
+            <input value="{% if respaldo.email %} {{ respaldo.email }} {% endif %}" type="email" class="form-control" id="exampleInputEmail1" placeholder="Correo electrónico" name="email">
         </div>
         <div class="col pt-3">
-            <input type="text" class="form-control" id="Username" placeholder="Nombre de usuario">
+            <input value="{% if respaldo.username %} {{ respaldo.username }} {% endif %}" type="text" class="form-control" id="Username" placeholder="Nombre de usuario" name="username">
         </div>
     </div>
 
     <div class="row g-3 mb-3">
         <div class="col">
-            <input type="text" class="form-control" placeholder="Nombres" aria-label="First name">
+            <input value="{% if respaldo.name %} {{ respaldo.name }} {% endif %}" type="text" class="form-control" placeholder="Nombres" aria-label="First name" name="name">
         </div>
         <div class="col">
-            <input type="text" class="form-control" placeholder="Apellidos" aria-label="Last name">
+            <input value="{% if respaldo.lastname %} {{ respaldo.lastname }} {% endif %}" type="text" class="form-control" placeholder="Apellidos" aria-label="Last name" name="lastname">
         </div>
     </div>
 
     <div class="mb-3">  
         <div class="col">
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Contraseña">
+            <input value="{% if respaldo.password %} {{ respaldo.password }} {% endif %}" type="password" class="form-control" id="exampleInputPassword1" placeholder="Contraseña" name="password">
         </div>
     </div>
     <button type="submit" class="btn btn-dark">Iniciar sesión</button>

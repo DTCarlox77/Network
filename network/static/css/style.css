@@ -1,3 +1,20 @@
 .red_message {
     color: red;
 }
+
+#floatingTextarea {
+    height: 110px;
+    resize: none; 
+}
+
+.pagination .page-link {
+    background-color: #fff; 
+    color: #000;
+    border-color: black;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: black;
+    color: white;
+    border-color: black;
+}

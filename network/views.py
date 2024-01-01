@@ -3,13 +3,14 @@ from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login as auth_login
-from network.models import CustomUser
+from network.models import CustomUser, Post, Seguidor
 from django.db import IntegrityError
 
-# Create your views here.
+# Página de presentación de la aplicación.
 def main(request):
     return render(request, 'index.html')
 
+# Página para iniciar sesión.
 @csrf_protect
 def login(request):
     
@@ -34,6 +35,7 @@ def login(request):
     
     return render(request, 'registration/login.html')
 
+# Página del registro de usuarios.
 @csrf_protect
 def sign_in(request):
     
@@ -89,18 +91,34 @@ def sign_in(request):
         
     return render(request, 'registration/sign_in.html')
 
+# Página pública de los posts.
 @login_required
 def posts(request):
-    return render(request, 'posts.html')
+    
+    all_posts = Post.objects.all().order_by('-fecha')
+    
+    return render(request, 'posts.html', {'posts': all_posts})
 
+# Vista para hacer una publicación, acá son visibles todas las publicaciones que uno mismo hizo.
 @login_required
 def new_post(request):
+    
+    if request.method == 'POST':
+        
+        autor = request.user
+        contenido = request.POST.get('post_description')
+        
+        nueva_publicacion = Post(autor=autor, contenido=contenido)
+        nueva_publicacion.save()
+        
     return render(request, 'new.html')
 
+# Perfil propio o de otros usuarios.
 @login_required
 def profile(request):
     return render(request, 'profile.html')
 
+# Cierre de sesión de la aplicación.
 @login_required
 def exit(request):
     logout(request)

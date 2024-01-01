@@ -4,44 +4,29 @@
 
 {% block content %}
 
-<div class="card">
-    <div class="card-body m-3">
-        <h5 class="card-title">@DTCarlox77</h5>
-        <p class="card-text">Qué aburrido</p>
+{% if posts %}
 
-        <p class="card-text">20/12/23 - 02:22 pm</p>
-        <a href="#" class="btn btn-primary btn-dark">5 Likes</a>
+    {% for post in posts %}
+
+    <div class="card">
+        <div class="card-body m-3">
+            <h3 class="card-title"><a class="text-decoration-none text-dark" href="{% url 'main' %}">@{{ post.autor }}</a></h3>
+            <p class="card-text">{{ post.contenido }}</p>
+    
+            <p class="card-text">{{ post.fecha }}</p>
+            <button href="#" class="btn btn-primary btn-dark">{{ post.likes }} Likes</button>
+        </div>
     </div>
-</div>
 
-<div class="card">
-    <div class="card-body m-3">
-        <h5 class="card-title">@DTCarlox77</h5>
-        <p class="card-text">Qué aburrido</p>
+    {% endfor %}
 
-        <p class="card-text">20/12/23 - 02:22 pm</p>
-        <a href="#" class="btn btn-primary btn-dark">5 Likes</a>
+{% else %}
+
+    <div class="container mt-4 border p-4">
+        <h2>Aún no hay publicaciones</h2>
+        <a class="text-decoration-none" href="{% url 'new' %}">Sé el primero en hacer un post</a>
     </div>
-</div>
 
-<div class="card">
-    <div class="card-body m-3">
-        <h5 class="card-title">@DTCarlox77</h5>
-        <p class="card-text">Qué aburrido</p>
-
-        <p class="card-text">20/12/23 - 02:22 pm</p>
-        <a href="#" class="btn btn-primary btn-dark">5 Likes</a>
-    </div>
-</div>
-
-<div class="card">
-    <div class="card-body m-3">
-        <h5 class="card-title">@DTCarlox77</h5>
-        <p class="card-text">Qué aburrido</p>
-
-        <p class="card-text">20/12/23 - 02:22 pm</p>
-        <a href="#" class="btn btn-primary btn-dark">5 Likes</a>
-    </div>
-</div>
+{% endif %}
 
 {% endblock %}

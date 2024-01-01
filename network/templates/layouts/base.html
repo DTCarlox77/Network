@@ -25,6 +25,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
+                    <a class="nav-link active" aria-current="page" href="{% url 'profile' %}">{{ user.username }}</a>
                     <a class="nav-link active" aria-current="page" href="{% url 'new' %}">Nuevo post</a>
                     <a class="nav-link active" aria-current="page" href="{% url 'posts' %}">Publicaciones</a>
                     <a class="nav-link active" aria-current="page" href="{% url 'following' %}">Siguiendo</a>

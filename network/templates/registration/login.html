@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<form class="m-4" action="{% url 'login' %}" method="POST">
+<form class="m-4 mb-10" action="{% url 'login' %}" method="POST">
     {% csrf_token %}
     <input type="hidden" name="next" value="{{ request.GET.next }}">
     

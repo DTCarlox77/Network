@@ -7,7 +7,7 @@ urlpatterns = [
     path('sign_in/', sign_in, name='sign_in'),
     path('posts/', posts, name='posts'),
     path('new_post/', new_post, name='new'),
-    path('profile/', profile, name='profile'),
+    path('profile/<str:username>', profile, name='profile'),
     path('logout/', exit, name='exit'),
     path('following/', main, name='following')
 ]

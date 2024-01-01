@@ -16,7 +16,7 @@
 
     {% if user.is_authenticated %}
 
-    <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top p-3" data-bs-theme="dark">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top p-3 bg-dark" data-bs-theme="dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="{% url 'main' %}">Network</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
@@ -25,7 +25,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
-                    <a class="nav-link active" aria-current="page" href="{% url 'profile' %}">{{ user.username }}</a>
+                    <a class="nav-link active" aria-current="page" href="{% url 'profile' user.username %}">{{ user.username }}</a>
                     <a class="nav-link active" aria-current="page" href="{% url 'new' %}">Nuevo post</a>
                     <a class="nav-link active" aria-current="page" href="{% url 'posts' %}">Publicaciones</a>
                     <a class="nav-link active" aria-current="page" href="{% url 'following' %}">Siguiendo</a>
@@ -37,7 +37,7 @@
 
     {% else %}
 
-    <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top p-3" data-bs-theme="dark">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top p-3" data-bs-theme="dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="{% url 'main' %}">Network</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
@@ -54,8 +54,28 @@
     </nav>
 
     {% endif %}
+    
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
 
-    {% block content %}
-    {% endblock %}
+
+
+    <footer class="bg-dark text-white p-4 mt-5 bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Project 4: Network</h3>
+                    <p>Elaborado por Carlos Adrián Espinosa Luna (DTCarlox77). CS50W</p>
+                </div>
+                <div class="col-md-6 text-md-right">
+                    <h5>Suígueme en mis redes</h5>
+                    <a target="_blank" href="https://github.com/DTCarlox77" class="text-white text-decoration-none">GitHub</a>
+                    <a target="_blank" href="https://www.youtube.com/channel/UCnUWCagaLT2qAK1Rl2VAfzQ" class="text-white text-decoration-none">YouTube</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>

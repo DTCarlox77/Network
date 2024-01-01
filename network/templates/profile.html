@@ -4,39 +4,110 @@
 
 {% block content %}
 
-<div class="container border mt-4 mb-4 p-2">
-    <h2>@DTCarlox77</h2>
-    <h6 class="ml-5 mt-2">Mi biografía</h6>
-    <div class="span border m-2 p-2">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit harum repellat, natus distinctio culpa vero
-            dolores. Ab repudiandae neque quae pariatur voluptatum sapiente cum nulla. Est eveniet consequuntur vero
-            esse.</p>
-    </div>
-    <h5>24 seguidores</h5>
-    <h5>5 seguidos</h5>
-    <button class="btn btn-dark">Dejar de seguir</button>
-</div>
+{% if perfil == 'propio' %}
 
-<div class="container border mt-4 mb-4 p-2">
-    <h2>@DTCarlox77</h2>
-    <h6 class="ml-5 mt-2">Mi biografía</h6>
-    <div class="form-floating mb-3">
-        <textarea class="form-control" placeholder="¿Qué tienes en mente?" id="floatingTextarea"></textarea>
-        <label for="floatingTextarea">Redacta tu biografía</label>
+    <div class="container border mt-4 mb-4 p-2">
+        <h2>@{{ username.username }}</h2>
+        <h4>{{ username.name }} {{ username.lastname }}</h4>
+        <hr>
+        <h6 class="ml-5 mt-2">Mi biografía</h6>
+        <form action="{% url 'profile' username.username %}" method="POST">
+            {% csrf_token %}
+            <div class="form-floating mb-3">
+                <textarea class="form-control" placeholder="¿Qué tienes en mente?" id="floatingTextarea" value="Prueba"></textarea>
+                <label for="floatingTextarea">Redacta tu biografía</label>
+            </div>
+            <hr>
+            <h5>{{ seguidores }} seguidores</h5>
+            <h5>{{ siguiendo }} seguidos</h5>
+            <br>
+            <button class="btn btn-dark">Guardar cambios</button>
+        </form>
     </div>
-    <h5>24 seguidores</h5>
-    <h5>5 seguidos</h5>
-    <button class="btn btn-dark">Guardar cambios</button>
-</div>
 
-<div class="card">
-    <div class="card-body m-3">
-        <h5 class="card-title">@DTCarlox77</h5>
-        <p class="card-text">Qué aburrido</p>
+{% else %}
 
-        <p class="card-text">20/12/23 - 02:22 pm</p>
-        <a href="#" class="btn btn-primary btn-dark">5 Likes</a>
+    <div class="container border mt-4 mb-4 p-2">
+        <h2>@{{ username.username }}</h2>
+
+        {% if username.biografia %}
+            <h6 class="ml-5 mt-2">Biografía</h6>
+            <div class="span border m-2 p-2">
+                <p>{{ username.biografia }}</p>
+            </div>
+        {% else %}
+            <h6 class="ml-5 mt-2">Biografía</h6>
+            <div class="span border m-2 p-2">
+                <p>Este usuario no posee una biografía</p>
+            </div>
+        {% endif %}
+
+        <h5>{{ seguidores }} seguidores</h5>
+        <h5>{{ siguiendo }} seguidos</h5>
+        <button class="btn btn-dark">Dejar de seguir</button>
     </div>
-</div>
+
+{% endif %}
+
+{% if page_posts %}
+
+    {% for post in page_posts %}
+
+    <div class="card">
+        <div class="card-body m-3">
+            <h3 class="card-title">@{{ post.autor }}</h3>
+            <p class="card-text">{{ post.contenido }}</p>
+
+            <p class="card-text">{{ post.fecha }}</p>
+            <button href="#" class="btn btn-primary btn-dark">{{ post.likes }} Likes</button>
+        </div>
+    </div>
+
+    {% endfor %}
+
+    <div class="d-flex justify-content-center mt-5">
+        <nav aria-label="...">
+            <ul class="pagination">
+
+                {% if page_posts.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_posts.previous_page_number }}">Página anterior</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link" href="?page=1">Página anterior</span>
+                    </li>
+                {% endif %}
+
+                
+                {% for num in page_posts.paginator.page_range %}
+                    <li class="page-item {% if num == page_posts.number%}active{% endif %}" aria-current="page">
+                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                    </li>
+                {% endfor %}
+
+
+                {% if page_posts.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_posts.next_page_number }}">Página siguiente</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">Página siguiente</span>
+                    </li>
+                {% endif %}
+
+            </ul>
+        </nav>
+    </div>
+
+{% else %}
+
+    <div class="container mt-4 border p-4">
+        <h2>{% if perfil == 'propio' %}No has hecho publicaciones{% else %}Esta persona no ha hecho publicaciones{% endif %}</h2>
+        <a class="text-decoration-none" href="{% url 'new' %}">Sé el primero en hacer un post</a>
+    </div>
+
+{% endif %}
 
 {% endblock %}

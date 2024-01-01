@@ -1,10 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login as auth_login
 from network.models import CustomUser, Post, Seguidor
 from django.db import IntegrityError
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Página de presentación de la aplicación.
 def main(request):
@@ -95,9 +96,23 @@ def sign_in(request):
 @login_required
 def posts(request):
     
+    # Obtención de las publicaciones ordenadas por fecha.
     all_posts = Post.objects.all().order_by('-fecha')
     
-    return render(request, 'posts.html', {'posts': all_posts})
+    # Sistema de paginación de la vista.
+    paginator = Paginator(all_posts, 10)
+    page = request.GET.get('page')
+    
+    try:
+        page_posts = paginator.page(page)
+        
+    except PageNotAnInteger:
+        page_posts = paginator.page(1)
+    
+    except EmptyPage:
+        page_posts = paginator.page(paginator.num_pages)
+    
+    return render(request, 'posts.html', {'posts': page_posts})
 
 # Vista para hacer una publicación, acá son visibles todas las publicaciones que uno mismo hizo.
 @login_required
@@ -115,8 +130,36 @@ def new_post(request):
 
 # Perfil propio o de otros usuarios.
 @login_required
-def profile(request):
-    return render(request, 'profile.html')
+def profile(request, username):
+    usuario = get_object_or_404(CustomUser, username=username)
+    user_posts = Post.objects.filter(autor=usuario).order_by('-fecha')
+
+    # Sistema de paginación de la vista.
+    paginator = Paginator(user_posts, 10)
+    page = request.GET.get('page')
+
+    try:
+        page_posts = paginator.page(page)
+
+    except PageNotAnInteger:
+        page_posts = paginator.page(1)
+
+    except EmptyPage:
+        page_posts = paginator.page(paginator.num_pages)
+        
+    # Cantidad de seguidores del usuario.
+    seguidores = Seguidor.objects.filter(siguiendo=usuario).count()
+    siguiendo = Seguidor.objects.filter(seguidor=usuario).count()
+        
+    #if request.method == "POST":
+        
+    return render(request, 'profile.html', {
+        'page_posts': page_posts,
+        'perfil': 'propio' if str(username) == str(request.user) else None,
+        'username': usuario,
+        'seguidores': seguidores,
+        'siguiendo': siguiendo
+    })
 
 # Cierre de sesión de la aplicación.
 @login_required

@@ -24,10 +24,22 @@ class Seguidor(models.Model):
     def __str__(self):
         return f"{self.seguidor.username} sigue a {self.siguiendo.username}"
     
+# Modelo para el manejo de los likes.
+class Like(models.Model):
+    usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    post = models.ForeignKey('Post', on_delete=models.CASCADE)
+    fecha = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.usuario.username} dio like a {self.post}"
+    
 # Modelo para las publicaciones.
 class Post(models.Model):
     
     autor = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     contenido = models.TextField()
     fecha = models.DateTimeField(auto_now_add=True)
-    likes = models.IntegerField(default=0)
+    likes = models.ManyToManyField(CustomUser, through=Like, related_name='post_likes')
+    
+    def __str__(self):
+        return f"Post de {self.autor.username} - {self.contenido}"

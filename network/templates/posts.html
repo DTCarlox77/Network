@@ -10,15 +10,57 @@
 
     <div class="card">
         <div class="card-body m-3">
-            <h3 class="card-title"><a class="text-decoration-none text-dark" href="{% url 'main' %}">@{{ post.autor }}</a></h3>
+            <h3 class="card-title"><a class="text-decoration-none text-dark" href="/profile/{{ post.autor }}">@{{ post.autor }}</a></h3>
             <p class="card-text">{{ post.contenido }}</p>
     
             <p class="card-text">{{ post.fecha }}</p>
-            <button href="#" class="btn btn-primary btn-dark">{{ post.likes }} Likes</button>
+            <button href="#" class="btn btn-primary btn-dark">
+                {% if post.likes.all %}
+                    {{ post.likes.all.count }} Likes
+                {% else %}
+                    0 Likes
+                {% endif %}
+            </button>
         </div>
     </div>
 
     {% endfor %}
+
+    <div class="d-flex justify-content-center mt-5">
+        <nav aria-label="...">
+            <ul class="pagination">
+
+                {% if posts.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ posts.previous_page_number }}">Página anterior</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link" href="?page=1">Página anterior</span>
+                    </li>
+                {% endif %}
+
+                
+                {% for num in posts.paginator.page_range %}
+                    <li class="page-item {% if num == posts.number%}active{% endif %}" aria-current="page">
+                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                    </li>
+                {% endfor %}
+
+
+                {% if posts.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ posts.next_page_number }}">Página siguiente</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">Página siguiente</span>
+                    </li>
+                {% endif %}
+
+            </ul>
+        </nav>
+    </div>
 
 {% else %}
 

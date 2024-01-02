@@ -52,9 +52,13 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     'https://network-uz08.onrender.com',
+    'http://localhost:8000'
 ]
 
-CSRF_TRUSTED_ORIGINS = ['https://network-uz08.onrender.com/']
+CSRF_TRUSTED_ORIGINS = [
+    'https://network-uz08.onrender.com',
+    'http://localhost:8000'
+]
 
 ROOT_URLCONF = 'project4.urls'
 

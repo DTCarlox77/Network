@@ -14,16 +14,18 @@
         <form action="{% url 'profile' username.username %}" method="POST">
             {% csrf_token %}
             <div class="form-floating mb-3">
-                <textarea class="form-control" placeholder="¿Qué tienes en mente?" id="floatingTextarea" value="Prueba"></textarea>
+                <textarea class="form-control" placeholder="¿Qué tienes en mente?" id="floatingTextarea" value="Prueba" name="biografia"></textarea>
                 <label for="floatingTextarea">Redacta tu biografía</label>
             </div>
             <hr>
             <h5>{{ seguidores }} seguidores</h5>
             <h5>{{ siguiendo }} seguidos</h5>
             <br>
-            <button class="btn btn-dark">Guardar cambios</button>
+            <button type="submit" class="btn btn-dark">Guardar cambios</button>
         </form>
     </div>
+
+    <h3 class="p-4">Tus posts</h3>
 
 {% else %}
 
@@ -57,9 +59,19 @@
         <div class="card-body m-3">
             <h3 class="card-title">@{{ post.autor }}</h3>
             <p class="card-text">{{ post.contenido }}</p>
-
+    
             <p class="card-text">{{ post.fecha }}</p>
-            <button href="#" class="btn btn-primary btn-dark">{{ post.likes }} Likes</button>
+            <button class="btn btn-primary btn-dark">
+                {% if post.likes.all %}
+                    {{ post.likes.all.count }} Likes
+                {% else %}
+                    0 Likes
+                {% endif %}
+            </button>
+            {% if perfil == 'propio' %}
+                <button class="btn btn-light">Modificar</button>
+                <button class="btn btn-light">Eliminar</button>
+            {% endif %}
         </div>
     </div>
 
@@ -71,14 +83,13 @@
 
                 {% if page_posts.has_previous %}
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ page_posts.previous_page_number }}">Página anterior</a>
+                        <a class="page-link" href="?page={{ page_posts.previous_page_number }}">Atrás</a>
                     </li>
                 {% else %}
                     <li class="page-item disabled">
-                        <span class="page-link" href="?page=1">Página anterior</span>
+                        <span class="page-link" href="?page=1">Atrás</span>
                     </li>
                 {% endif %}
-
                 
                 {% for num in page_posts.paginator.page_range %}
                     <li class="page-item {% if num == page_posts.number%}active{% endif %}" aria-current="page">
@@ -86,14 +97,13 @@
                     </li>
                 {% endfor %}
 
-
                 {% if page_posts.has_next %}
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ page_posts.next_page_number }}">Página siguiente</a>
+                        <a class="page-link" href="?page={{ page_posts.next_page_number }}">Siguiente</a>
                     </li>
                 {% else %}
                     <li class="page-item disabled">
-                        <span class="page-link">Página siguiente</span>
+                        <span class="page-link">Siguiente</span>
                     </li>
                 {% endif %}
 
@@ -105,7 +115,6 @@
 
     <div class="container mt-4 border p-4">
         <h2>{% if perfil == 'propio' %}No has hecho publicaciones{% else %}Esta persona no ha hecho publicaciones{% endif %}</h2>
-        <a class="text-decoration-none" href="{% url 'new' %}">Sé el primero en hacer un post</a>
     </div>
 
 {% endif %}

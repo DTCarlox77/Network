@@ -3,8 +3,9 @@ from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login as auth_login
-from network.models import CustomUser, Post, Seguidor
+from network.models import CustomUser, Post, Seguidor, Like
 from django.db import IntegrityError
+from django.http import JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Página de presentación de la aplicación.
@@ -151,7 +152,12 @@ def profile(request, username):
     seguidores = Seguidor.objects.filter(siguiendo=usuario).count()
     siguiendo = Seguidor.objects.filter(seguidor=usuario).count()
         
-    #if request.method == "POST":
+    if request.method == 'POST':
+        nueva_biografia = request.POST.get('biografia')
+
+        if nueva_biografia is not None:
+            usuario.biografia = nueva_biografia
+            usuario.save()
         
     return render(request, 'profile.html', {
         'page_posts': page_posts,
@@ -159,6 +165,29 @@ def profile(request, username):
         'username': usuario,
         'seguidores': seguidores,
         'siguiendo': siguiendo
+    })
+
+# Función para el manejo de los likes en las publicaciones.
+@login_required
+def post_liked(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    
+    # Validación si el usuario ya dio like al post seleccionado.
+    like, created = Like.objects.get_or_create(usuario=request.user, post=post)
+    
+    if created:
+        # Agrega a la base de datos el like en caso de ser nuevo like.
+        post.likes.add(request.user)
+    
+    else:
+        # Quita el like dela base de datos.
+        post.likes.remove(request.user)
+    
+    # Cantidad de likes del post.
+    cantidad_likes = post.likes.count()
+    
+    return JsonResponse({
+        'likes': cantidad_likes
     })
 
 # Cierre de sesión de la aplicación.

@@ -14,13 +14,17 @@
             <p class="card-text">{{ post.contenido }}</p>
     
             <p class="card-text">{{ post.fecha }}</p>
-            <button href="#" class="btn btn-primary btn-dark">
-                {% if post.likes.all %}
-                    {{ post.likes.all.count }} Likes
-                {% else %}
-                    0 Likes
-                {% endif %}
-            </button>
+
+            <form method="POST" class="like-form">
+                {% csrf_token %}
+                <button type="button" class="btn btn-primary btn-dark like_button" data-post-id="{{ post.id }}">
+                    {% if post.likes.all %}
+                        {{ post.likes.all.count }} Likes
+                    {% else %}
+                        0 Likes
+                    {% endif %}
+                </button>
+            </form>
         </div>
     </div>
 
@@ -32,11 +36,11 @@
 
                 {% if posts.has_previous %}
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ posts.previous_page_number }}">Página anterior</a>
+                        <a class="page-link" href="?page={{ posts.previous_page_number }}">Atrás</a>
                     </li>
                 {% else %}
                     <li class="page-item disabled">
-                        <span class="page-link" href="?page=1">Página anterior</span>
+                        <span class="page-link" href="?page=1">Atrás</span>
                     </li>
                 {% endif %}
 
@@ -50,11 +54,11 @@
 
                 {% if posts.has_next %}
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ posts.next_page_number }}">Página siguiente</a>
+                        <a class="page-link" href="?page={{ posts.next_page_number }}">Siguiente</a>
                     </li>
                 {% else %}
                     <li class="page-item disabled">
-                        <span class="page-link">Página siguiente</span>
+                        <span class="page-link">Siguiente</span>
                     </li>
                 {% endif %}
 

@@ -5,6 +5,8 @@
 {% block content %}
 
 
+<br>
+
 <form class="m-4" action="{% url 'sign_in' %}" method="POST">
     {% csrf_token %}
     <h3 class="pb-4">Crear cuenta</h3>
@@ -36,6 +38,5 @@
     <button type="submit" class="btn btn-dark">Registrarme</button>
 </form>
 
-<br>
 
 {% endblock %}

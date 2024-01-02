@@ -36,3 +36,9 @@ footer {
 .cuerpo {
     margin-top: 80px;
 }
+
+.portada {
+    object-fit: cover;
+    max-height: 150px;
+    min-width: 800px;
+}

@@ -49,10 +49,14 @@
             <h5 id="cantidad_seguidores">{{ seguidores }} Seguidores</h5>
             <h5>{{ siguiendo }} Seguidos</h5>   
 
-            {% if seguidor %}
-                <button type="button" class="btn btn-dark" data-usuario="{{ username.username }}" id="follow_button">Siguiendo</button>
-            {% else %}
-                <button type="button" class="btn btn-dark" data-usuario="{{ username.username }}" id="follow_button">Seguir</button>
+            {% if user.is_authenticated %}
+
+                {% if seguidor %}
+                    <button type="button" class="btn btn-dark" data-usuario="{{ username.username }}" id="follow_button">Siguiendo</button>
+                {% else %}
+                    <button type="button" class="btn btn-dark" data-usuario="{{ username.username }}" id="follow_button">Seguir</button>
+                {% endif %}
+
             {% endif %}
             
         </form>
@@ -74,37 +78,51 @@
                 <p class="card-text" id="content-{{ post.id }}">{{ post.contenido }}</p>
         
                 {% csrf_token %}
-                {% if request.user in post.likes.all %}
-                    <button type="button" class="btn btn-primary btn-dark like_button" data-post-id="{{ post.id }}">
-                        {{ post.likes.all.count }} Likes
-                    </button>
+
+                {% if user.is_authenticated %}
+                    {% if request.user in post.likes.all %}
+                        <button type="button" class="btn btn-primary btn-dark like_button" data-post-id="{{ post.id }}">
+                            {{ post.likes.all.count }} Likes
+                        </button>
+                    {% else %}
+                        <button type="button" class="btn btn-primary btn-light like_button" data-post-id="{{ post.id }}">
+                            {{ post.likes.all.count }} Likes
+                        </button>
+                    {% endif %}
+
+                    {% if perfil == 'propio' %}
+                        <button type="button" class="btn btn-light edit_post" data-post-id="{{ post.id }}">Modificar</button>
+                        <button type="button" class="btn btn-light delete_post" data-post-id="{{ post.id }}">Eliminar</button>
+                    {% endif %}
                 {% else %}
-                    <button type="button" class="btn btn-primary btn-light like_button" data-post-id="{{ post.id }}">
-                        {{ post.likes.all.count }} Likes
-                    </button>
-                {% endif %}
-
-                {% if perfil == 'propio' %}
-                    <button type="button" class="btn btn-light edit_post" data-post-id="{{ post.id }}">Modificar</button>
-                    <button type="button" class="btn btn-light delete_post" data-post-id="{{ post.id }}">Eliminar</button>
+                    <a  href="{% url 'login' %}">
+                        <button type="button" class="btn btn-primary btn-light">
+                            {{ post.likes.all.count }} Likes
+                        </button>
+                    </a>
                 {% endif %}
             </form>
 
-            <form method="POST" id="edit-{{ post.id }}" style="display: none;">
-                {% csrf_token %}
-                <div class="form-floating mb-3">
-                    <textarea class="form-control" placeholder="¿Qué tienes en mente?" id="area-{{ post.id }}" value="Prueba" name="biografia">{{ post.contenido }}</textarea>
-                    <label for="area-{{ post.id }}">Editar publicación</label>
-                </div>
+            {% if user.is_authenticated %}
 
-                <button type="button" class="btn btn-dark submit_edit" data-post-id="{{ post.id }}">Guardar cambios</button>
-                <button type="button" class="btn btn-dark edit_post" data-post-id="{{ post.id }}">Descartar cambios</button>
-            </form>
+                <form method="POST" id="edit-{{ post.id }}" style="display: none;">
+                    {% csrf_token %}
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" placeholder="¿Qué tienes en mente?" id="area-{{ post.id }}" value="Prueba" name="biografia">{{ post.contenido }}</textarea>
+                        <label for="area-{{ post.id }}">Editar publicación</label>
+                    </div>
+
+                    <button type="button" class="btn btn-dark submit_edit" data-post-id="{{ post.id }}">Guardar cambios</button>
+                    <button type="button" class="btn btn-dark edit_post" data-post-id="{{ post.id }}">Descartar cambios</button>
+                </form>
+
+            {% endif %}
         </div>
     </div>
 
     {% endfor %}
 
+    <br>
     <div class="d-flex justify-content-center mt-5">
         <nav aria-label="...">
             <ul class="pagination">
@@ -146,5 +164,7 @@
     </div>
 
 {% endif %}
+
+<br>
 
 {% endblock %}

@@ -13,40 +13,53 @@
 
             <h3 class="card-title"><a class="text-decoration-none text-dark" href="/profile/{{ post.autor }}">@{{ post.autor }}</a></h3>
             <p class="card-text">{{ post.fecha }}</p>
+
             <form method="POST" class="like-form" id="post-{{ post.id }}">
                 <p class="card-text" id="content-{{ post.id }}">{{ post.contenido }}</p>
         
-                {% csrf_token %}
-                {% if request.user in post.likes.all %}
-                    <button type="button" class="btn btn-primary btn-dark like_button" data-post-id="{{ post.id }}">
-                        {{ post.likes.all.count }} Likes
-                    </button>
+                {% if user.is_authenticated %}
+                    {% csrf_token %}
+                    {% if request.user in post.likes.all %}
+                        <button type="button" class="btn btn-primary btn-dark like_button" data-post-id="{{ post.id }}">
+                            {{ post.likes.all.count }} Likes
+                        </button>
+                    {% else %}
+                        <button type="button" class="btn btn-primary btn-light like_button" data-post-id="{{ post.id }}">
+                            {{ post.likes.all.count }} Likes
+                        </button>
+                    {% endif %}
+
+                    {% if post.autor == request.user %}
+                        <button type="button" class="btn btn-light edit_post" data-post-id="{{ post.id }}">Modificar</button>
+                        <button type="button" class="btn btn-light delete_post" data-post-id="{{ post.id }}">Eliminar</button>
+                    {% endif %}
                 {% else %}
-                    <button type="button" class="btn btn-primary btn-light like_button" data-post-id="{{ post.id }}">
+                <a  href="{% url 'login' %}">
+                    <button type="button" class="btn btn-primary btn-light">
                         {{ post.likes.all.count }} Likes
                     </button>
-                {% endif %}
-
-                {% if post.autor == request.user %}
-                    <button type="button" class="btn btn-light edit_post" data-post-id="{{ post.id }}">Modificar</button>
-                    <button type="button" class="btn btn-light delete_post" data-post-id="{{ post.id }}">Eliminar</button>
+                </a>
                 {% endif %}
             </form>
 
-            <form method="POST" id="edit-{{ post.id }}" style="display: none;">
-                {% csrf_token %}
-                <div class="form-floating mb-3">
-                    <textarea class="form-control" placeholder="¿Qué tienes en mente?" id="area-{{ post.id }}" value="Prueba" name="biografia">{{ post.contenido }}</textarea>
-                    <label for="area-{{ post.id }}">Editar publicación</label>
-                </div>
+            {% if user.is_authenticated %}
+                <form method="POST" id="edit-{{ post.id }}" style="display: none;">
+                    {% csrf_token %}
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" placeholder="¿Qué tienes en mente?" id="area-{{ post.id }}" value="Prueba" name="biografia">{{ post.contenido }}</textarea>
+                        <label for="area-{{ post.id }}">Editar publicación</label>
+                    </div>
 
-                <button type="button" class="btn btn-dark submit_edit" data-post-id="{{ post.id }}">Guardar cambios</button>
-                <button type="button" class="btn btn-dark edit_post" data-post-id="{{ post.id }}">Descartar cambios</button>
-            </form>
+                    <button type="button" class="btn btn-dark submit_edit" data-post-id="{{ post.id }}">Guardar cambios</button>
+                    <button type="button" class="btn btn-dark edit_post" data-post-id="{{ post.id }}">Descartar cambios</button>
+                </form>
+            {% endif %}
         </div>
     </div>
 
     {% endfor %}
+
+    <br>
 
     <div class="d-flex justify-content-center mt-5">
         <nav aria-label="...">
@@ -92,5 +105,8 @@
     </div>
 
 {% endif %}
+
+<br>
+<br>
 
 {% endblock %}

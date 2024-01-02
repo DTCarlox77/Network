@@ -96,7 +96,6 @@ def sign_in(request):
     return render(request, 'registration/sign_in.html')
 
 # Página pública de los posts.
-@login_required
 def posts(request):
     
     # Obtención de las publicaciones ordenadas por fecha.
@@ -156,10 +155,10 @@ def new_post(request):
     return render(request, 'new.html')
 
 # Perfil propio o de otros usuarios.
-@login_required
 def profile(request, username):
     usuario = get_object_or_404(CustomUser, username=username)
     user_posts = Post.objects.filter(autor=usuario).order_by('-fecha')
+    seguidor = None
 
     # Sistema de paginación de la vista.
     paginator = Paginator(user_posts, 10)
@@ -179,7 +178,8 @@ def profile(request, username):
     siguiendo = Seguidor.objects.filter(seguidor=usuario).count()
     
     # Validación de seguimiento de usuario.
-    seguidor = Seguidor.objects.filter(seguidor=request.user, siguiendo=usuario).exists()
+    if request.user.is_authenticated:
+        seguidor = Seguidor.objects.filter(seguidor=request.user, siguiendo=usuario).exists()
         
     if request.method == 'POST':
         nueva_biografia = request.POST.get('biografia')

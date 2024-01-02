@@ -10,5 +10,6 @@ urlpatterns = [
     path('profile/<str:username>/', profile, name='profile'),
     path('logout/', exit, name='exit'),
     path('following/', main, name='following'),
-    path('like_post/<int:post_id>/', post_liked, name='like_post')
+    path('like_post/<int:post_id>/', post_liked, name='like_post'),
+    path('follow/<str:username>/', follow_user, name='follow_user')
 ]

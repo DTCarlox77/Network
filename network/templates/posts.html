@@ -17,13 +17,15 @@
 
             <form method="POST" class="like-form">
                 {% csrf_token %}
-                <button type="button" class="btn btn-primary btn-dark like_button" data-post-id="{{ post.id }}">
-                    {% if post.likes.all %}
+                {% if request.user in post.likes.all %}
+                    <button type="button" class="btn btn-primary btn-dark like_button" data-post-id="{{ post.id }}">
                         {{ post.likes.all.count }} Likes
-                    {% else %}
-                        0 Likes
-                    {% endif %}
-                </button>
+                    </button>
+                {% else %}
+                    <button type="button" class="btn btn-primary btn-light like_button" data-post-id="{{ post.id }}">
+                        {{ post.likes.all.count }} Likes
+                    </button>
+                {% endif %}
             </form>
         </div>
     </div>

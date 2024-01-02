@@ -151,6 +151,9 @@ def profile(request, username):
     # Cantidad de seguidores del usuario.
     seguidores = Seguidor.objects.filter(siguiendo=usuario).count()
     siguiendo = Seguidor.objects.filter(seguidor=usuario).count()
+    
+    # Validación de seguimiento de usuario.
+    seguidor = Seguidor.objects.filter(seguidor=request.user, siguiendo=usuario).exists()
         
     if request.method == 'POST':
         nueva_biografia = request.POST.get('biografia')
@@ -164,7 +167,8 @@ def profile(request, username):
         'perfil': 'propio' if str(username) == str(request.user) else None,
         'username': usuario,
         'seguidores': seguidores,
-        'siguiendo': siguiendo
+        'siguiendo': siguiendo,
+        'seguidor': seguidor
     })
 
 # Función para el manejo de los likes en las publicaciones.
@@ -188,6 +192,25 @@ def post_liked(request, post_id):
     
     return JsonResponse({
         'likes': cantidad_likes
+    })
+    
+# Función para el manejo de los seguidores.
+@login_required
+def follow_user(request, username):
+    usuario_seguido = get_object_or_404(CustomUser, username=username)
+    
+    # Condición para dejar de seguir.
+    if Seguidor.objects.filter(seguidor=request.user, siguiendo=usuario_seguido).exists():
+        Seguidor.objects.filter(seguidor=request.user, siguiendo=usuario_seguido).delete()
+    
+    # Condición para seguir a un usuario.
+    else:
+        Seguidor.objects.create(seguidor=request.user, siguiendo=usuario_seguido)
+        
+    cantidad_seguidores = Seguidor.objects.filter(siguiendo=usuario_seguido).count()
+    
+    return JsonResponse({
+        'seguidores': cantidad_seguidores
     })
 
 # Cierre de sesión de la aplicación.

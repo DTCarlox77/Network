@@ -14,7 +14,7 @@
         <form action="{% url 'profile' username.username %}" method="POST">
             {% csrf_token %}
             <div class="form-floating mb-3">
-                <textarea class="form-control" placeholder="¿Qué tienes en mente?" id="floatingTextarea" value="Prueba" name="biografia"></textarea>
+                <textarea class="form-control" placeholder="¿Qué tienes en mente?" id="floatingTextarea" value="Prueba" name="biografia">{{ username.biografia }}</textarea>
                 <label for="floatingTextarea">Redacta tu biografía</label>
             </div>
             <hr>
@@ -44,9 +44,19 @@
             </div>
         {% endif %}
 
-        <h5>{{ seguidores }} seguidores</h5>
-        <h5>{{ siguiendo }} seguidos</h5>
-        <button class="btn btn-dark">Dejar de seguir</button>
+        <form method="POST">
+            {% csrf_token %}         
+            <h5 id="cantidad_seguidores">{{ seguidores }} Seguidores</h5>
+            <h5>{{ siguiendo }} Seguidos</h5>   
+
+            {% if seguidor %}
+                <button type="button" class="btn btn-dark" data-usuario="{{ username.username }}" id="follow_button">Siguiendo</button>
+            {% else %}
+                <button type="button" class="btn btn-dark" data-usuario="{{ username.username }}" id="follow_button">Seguir</button>
+            {% endif %}
+            
+        </form>
+
     </div>
 
 {% endif %}
@@ -61,19 +71,27 @@
             <p class="card-text">{{ post.contenido }}</p>
     
             <p class="card-text">{{ post.fecha }}</p>
-            <button class="btn btn-primary btn-dark">
-                {% if post.likes.all %}
-                    {{ post.likes.all.count }} Likes
+
+            <form method="POST" class="like-form">
+                {% csrf_token %}
+                {% if request.user in post.likes.all %}
+                    <button type="button" class="btn btn-primary btn-dark like_button" data-post-id="{{ post.id }}">
+                        {{ post.likes.all.count }} Likes
+                    </button>
                 {% else %}
-                    0 Likes
+                    <button type="button" class="btn btn-primary btn-light like_button" data-post-id="{{ post.id }}">
+                        {{ post.likes.all.count }} Likes
+                    </button>
                 {% endif %}
-            </button>
-            {% if perfil == 'propio' %}
-                <button class="btn btn-light">Modificar</button>
-                <button class="btn btn-light">Eliminar</button>
-            {% endif %}
+
+                {% if perfil == 'propio' %}
+                    <button type="button" class="btn btn-light">Modificar</button>
+                    <button type="button" class="btn btn-light">Eliminar</button>
+                {% endif %}
+            </form>
         </div>
     </div>
+
 
     {% endfor %}
 

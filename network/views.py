@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login as auth_login
 from network.models import CustomUser, Post, Seguidor, Like
 from django.db import IntegrityError
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Página de presentación de la aplicación.
@@ -194,6 +194,17 @@ def post_liked(request, post_id):
         'likes': cantidad_likes
     })
     
+@login_required
+def del_post(request, post_id):
+    
+    post = get_object_or_404(Post, id=post_id)
+    
+    if request.user == post.autor:
+        Post.objects.filter(id=post_id, autor=request.user).delete()
+        return HttpResponse("success")
+        
+    return redirect('profile')
+
 # Función para el manejo de los seguidores.
 @login_required
 def follow_user(request, username):

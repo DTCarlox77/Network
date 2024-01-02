@@ -72,7 +72,7 @@
     
             <p class="card-text">{{ post.fecha }}</p>
 
-            <form method="POST" class="like-form">
+            <form method="POST" class="like-form" id="post-{{ post.id }}">
                 {% csrf_token %}
                 {% if request.user in post.likes.all %}
                     <button type="button" class="btn btn-primary btn-dark like_button" data-post-id="{{ post.id }}">
@@ -85,13 +85,12 @@
                 {% endif %}
 
                 {% if perfil == 'propio' %}
-                    <button type="button" class="btn btn-light">Modificar</button>
-                    <button type="button" class="btn btn-light">Eliminar</button>
+                    <button type="button" class="btn btn-light edit_post" data-post-id="{{ post.id }}">Modificar</button>
+                    <button type="button" class="btn btn-light delete_post" data-post-id="{{ post.id }}">Eliminar</button>
                 {% endif %}
             </form>
         </div>
     </div>
-
 
     {% endfor %}
 

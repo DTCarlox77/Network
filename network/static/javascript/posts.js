@@ -30,26 +30,30 @@ likes.forEach(like => {
     });
 });
 
-// Manejo de los eventos follow.
+// Manejo de la eliminación de publicaciones.
 
-const cantidad_seguidores = document.querySelector("#cantidad_seguidores");
-const seguir = document.querySelector("#follow_button");
+const deletes = document.querySelectorAll(".delete_post");
 
-seguir.addEventListener("click", () => {
-    const username = seguir.dataset.usuario;
-    const csrf_token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
-
-    fetch(`/follow/${username}/`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": csrf_token,
-        },
-    })
-    .then(response => response.json())
-    .then(data => {
-        cantidad_seguidores.textContent = `${data.seguidores} Seguidores`;
-        seguir.textContent = (seguir.textContent === "Seguir") ? "Siguiendo" : "Seguir";
-    })
-    .catch(error => console.error("Error con la solicitud:", error));
+deletes.forEach(del_post => {
+    del_post.addEventListener("click", () => {
+        const post_id = del_post.dataset.postId;
+        const csrf_token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+    
+        fetch(`/del_post/${post_id}/`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrf_token,
+            },
+        })
+        .then(response => {
+            if (response.ok) {
+                const contenedor = document.querySelector(`#post-${post_id}`);
+                contenedor.innerHTML = "<h4 class='red_message'>Eliminaste esta publicación</h4>";
+            } else {
+                console.error("Error con la solicitud:", response.statusText);
+            }
+        })
+        .catch(error => console.error("Error con la solicitud:", error));
+    });
 });

@@ -11,5 +11,6 @@ urlpatterns = [
     path('logout/', exit, name='exit'),
     path('following/', main, name='following'),
     path('like_post/<int:post_id>/', post_liked, name='like_post'),
-    path('follow/<str:username>/', follow_user, name='follow_user')
+    path('follow/<str:username>/', follow_user, name='follow_user'),
+    path('del_post/<int:post_id>/', del_post, name='del_post')
 ]

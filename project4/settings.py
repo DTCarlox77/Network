@@ -50,6 +50,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CORS_ALLOWED_ORIGINS = [
+    'https://network-uz08.onrender.com',
+]
+
+CSRF_TRUSTED_ORIGINS = ['https://network-uz08.onrender.com/']
+
 ROOT_URLCONF = 'project4.urls'
 
 TEMPLATES = [

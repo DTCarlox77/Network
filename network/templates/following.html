@@ -1,6 +1,6 @@
 {% extends "layouts/base.html" %}
 
-{% block title %}Publicaciones{% endblock %}
+{% block title %}Siguiendo{% endblock %}
 
 {% block content %}
 
@@ -26,22 +26,6 @@
                         {{ post.likes.all.count }} Likes
                     </button>
                 {% endif %}
-
-                {% if post.autor == request.user %}
-                    <button type="button" class="btn btn-light edit_post" data-post-id="{{ post.id }}">Modificar</button>
-                    <button type="button" class="btn btn-light delete_post" data-post-id="{{ post.id }}">Eliminar</button>
-                {% endif %}
-            </form>
-
-            <form method="POST" id="edit-{{ post.id }}" style="display: none;">
-                {% csrf_token %}
-                <div class="form-floating mb-3">
-                    <textarea class="form-control" placeholder="¿Qué tienes en mente?" id="area-{{ post.id }}" value="Prueba" name="biografia">{{ post.contenido }}</textarea>
-                    <label for="area-{{ post.id }}">Editar publicación</label>
-                </div>
-
-                <button type="button" class="btn btn-dark submit_edit" data-post-id="{{ post.id }}">Guardar cambios</button>
-                <button type="button" class="btn btn-dark edit_post" data-post-id="{{ post.id }}">Descartar cambios</button>
             </form>
         </div>
     </div>
@@ -88,7 +72,6 @@
 
     <div class="container mt-4 border p-4">
         <h2>Aún no hay publicaciones</h2>
-        <a class="text-decoration-none" href="{% url 'new' %}">Sé el primero en hacer un post</a>
     </div>
 
 {% endif %}

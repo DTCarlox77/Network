@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login as auth_login
 from network.models import CustomUser, Post, Seguidor, Like
+from django.db.models import Q
 from django.db import IntegrityError
 from django.http import JsonResponse, HttpResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -115,6 +116,30 @@ def posts(request):
         page_posts = paginator.page(paginator.num_pages)
     
     return render(request, 'posts.html', {'posts': page_posts})
+
+@login_required
+def following(request):
+    
+    # Obtención de los usuarios a los que sigue el usuario actual
+    usuarios_seguidos = Seguidor.objects.filter(seguidor=request.user).values_list('siguiendo', flat=True)
+
+    # Obtención de las publicaciones de los usuarios seguidos
+    following_posts = Post.objects.filter(autor__in=usuarios_seguidos).order_by('-fecha')
+    
+    # Sistema de paginación de la vista.
+    paginator = Paginator(following_posts, 10)
+    page = request.GET.get('page')
+    
+    try:
+        page_posts = paginator.page(page)
+        
+    except PageNotAnInteger:
+        page_posts = paginator.page(1)
+    
+    except EmptyPage:
+        page_posts = paginator.page(paginator.num_pages)
+    
+    return render(request, 'following.html', {'posts': page_posts})
 
 # Vista para hacer una publicación, acá son visibles todas las publicaciones que uno mismo hizo.
 @login_required

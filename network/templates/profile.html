@@ -67,12 +67,12 @@
 
     <div class="card">
         <div class="card-body m-3">
-            <h3 class="card-title">@{{ post.autor }}</h3>
-            <p class="card-text">{{ post.contenido }}</p>
-    
-            <p class="card-text">{{ post.fecha }}</p>
 
+            <h3 class="card-title">@{{ post.autor }}</h3>
+            <p class="card-text">{{ post.fecha }}</p>
             <form method="POST" class="like-form" id="post-{{ post.id }}">
+                <p class="card-text" id="content-{{ post.id }}">{{ post.contenido }}</p>
+        
                 {% csrf_token %}
                 {% if request.user in post.likes.all %}
                     <button type="button" class="btn btn-primary btn-dark like_button" data-post-id="{{ post.id }}">
@@ -88,6 +88,17 @@
                     <button type="button" class="btn btn-light edit_post" data-post-id="{{ post.id }}">Modificar</button>
                     <button type="button" class="btn btn-light delete_post" data-post-id="{{ post.id }}">Eliminar</button>
                 {% endif %}
+            </form>
+
+            <form method="POST" id="edit-{{ post.id }}" style="display: none;">
+                {% csrf_token %}
+                <div class="form-floating mb-3">
+                    <textarea class="form-control" placeholder="¿Qué tienes en mente?" id="area-{{ post.id }}" value="Prueba" name="biografia">{{ post.contenido }}</textarea>
+                    <label for="area-{{ post.id }}">Editar publicación</label>
+                </div>
+
+                <button type="button" class="btn btn-dark submit_edit" data-post-id="{{ post.id }}">Guardar cambios</button>
+                <button type="button" class="btn btn-dark edit_post" data-post-id="{{ post.id }}">Descartar cambios</button>
             </form>
         </div>
     </div>

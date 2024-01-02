@@ -7,6 +7,7 @@ from network.models import CustomUser, Post, Seguidor, Like
 from django.db import IntegrityError
 from django.http import JsonResponse, HttpResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+import json
 
 # Página de presentación de la aplicación.
 def main(request):
@@ -202,6 +203,24 @@ def del_post(request, post_id):
     if request.user == post.autor:
         Post.objects.filter(id=post_id, autor=request.user).delete()
         return HttpResponse("success")
+        
+    return redirect('profile')
+
+@login_required
+def edit_post(request, post_id):
+    
+    post = get_object_or_404(Post, id=post_id)
+    data = json.loads(request.body)
+    
+    nuevo_post = data.get('nuevo_post', '')
+    
+    if request.user == post.autor:
+        post.contenido = nuevo_post
+        post.save()
+        
+        return JsonResponse({
+            'post_actualizado': post.contenido
+        })
         
     return redirect('profile')
 

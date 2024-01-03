@@ -51,13 +51,13 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'localhost',
-    'network-5yx8.onrender.com'
+    'http://localhost',
+    'https://network-5yx8.onrender.com'
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'localhost',
-    'network-5yx8.onrender.com'
+    'http://localhost',
+    'https://network-5yx8.onrender.com'
 ]
 
 ROOT_URLCONF = 'project4.urls'

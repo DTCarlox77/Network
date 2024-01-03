@@ -26,13 +26,14 @@
 .portada {
     object-fit: cover;
     max-height: 150px;
-    min-width: 800px;
+    width: 100%;
 }
 
 body {
     display: flex;
     flex-direction: column;
     height: 100vh;
+    overflow-x: hidden;
 }
 
 main {
@@ -41,4 +42,8 @@ main {
 
 footer {
     flex-shrink: 0;
+}
+
+.cuerpo {
+    margin-top: 100px;
 }

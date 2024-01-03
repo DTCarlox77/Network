@@ -2,16 +2,6 @@
     color: red;
 }
 
-body {
-    width: 100%;
-    min-height: 100vh;
-    height: 100vh;
-}
-
-footer {
-    margin-top: auto;
-}
-
 #floatingTextarea {
     height: 110px;
     resize: none; 
@@ -33,12 +23,22 @@ footer {
     text-decoration: none;
 }
 
-.cuerpo {
-    margin-top: 105px;
-}
-
 .portada {
     object-fit: cover;
     max-height: 150px;
     min-width: 800px;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+main {
+    flex: 1;
+}
+
+footer {
+    flex-shrink: 0;
 }

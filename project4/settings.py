@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-fjphsnf0yv#fy^2s+bu4smh-y7huuf*gvr3stwpql7%ht0f$x^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://netw.onrender.com', 'localhost']
+ALLOWED_HOSTS = ['https://network-5yx8.onrender.com', 'localhost']
 
 
 # Application definition
@@ -51,12 +51,12 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'https://netw.onrender.com',
+    'https://network-5yx8.onrender.com',
     'http://localhost:8000'
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://netw.onrender.com',
+    'https://network-5yx8.onrender.com',
     'http://localhost:8000'
 ]
 

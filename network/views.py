@@ -278,8 +278,5 @@ def follow_user(request, username):
 @login_required
 def exit(request):
     
-    if request.user.is_authenticated:
-        return redirect('main')
-    
     logout(request)
     return redirect('login')

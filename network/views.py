@@ -18,6 +18,9 @@ def main(request):
 @csrf_protect
 def login(request):
     
+    if request.user.is_authenticated:
+        return redirect('main')
+    
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -42,6 +45,9 @@ def login(request):
 # Página del registro de usuarios.
 @csrf_protect
 def sign_in(request):
+    
+    if request.user.is_authenticated:
+        return redirect('main')
     
     if request.method == 'POST':
         # Validación de los datos del formulario.
@@ -271,5 +277,9 @@ def follow_user(request, username):
 # Cierre de sesión de la aplicación.
 @login_required
 def exit(request):
+    
+    if request.user.is_authenticated:
+        return redirect('main')
+    
     logout(request)
     return redirect('login')

@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-fjphsnf0yv#fy^2s+bu4smh-y7huuf*gvr3stwpql7%ht0f$x^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', 'network-5yx8.onrender.com']
+ALLOWED_HOSTS = ['localhost', 'network-5yx8.onrender.com', '127.0.0.1']
 
 
 # Application definition
@@ -116,7 +116,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'es'
 
-TIME_ZONE = 'GMT'
+TIME_ZONE = 'America/Managua'
 
 USE_I18N = True
 

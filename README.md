@@ -4,9 +4,45 @@
 
 ## Descripción del proyecto
 
-Bienvenido a Network, una red social dinámica y moderna diseñada para conectar a usuarios, permitiéndoles realizar publicaciones, seguir a otros usuarios y expresar su aprecio mediante "me gusta". La aplicación se implementa utilizando Python, JavaScript, HTML y CSS para ofrecer una experiencia interactiva y amigable, cumpliendo con los siguientes requisitos:
+Bienvenido a Network, una red social dinámica y moderna diseñada para conectar a usuarios, permitiéndoles realizar publicaciones, seguir a otros usuarios y expresar su aprecio mediante "Likes". La aplicación se implementa utilizando Django y cumple con una serie de características clave para ofrecer una experiencia completa a los usuarios:
 
-### Características clave:
+## Modelos de la Aplicación
+
+### 1. Usuario Personalizado (`CustomUser`)
+
+- Este modelo representa a los usuarios personalizados de la aplicación y hereda de `AbstractUser`.
+- Campos:
+  - `username`: Nombre de usuario único.
+  - `correo`: Correo electrónico único.
+  - `name`: Nombre del usuario.
+  - `lastname`: Apellido del usuario.
+  - `biografia`: Biografía opcional del usuario.
+
+### 2. Seguidor (`Seguidor`)
+
+- Modelo que gestiona las relaciones de seguidores entre usuarios.
+- Campos:
+  - `seguidor`: Usuario que sigue a otro (clave foránea a `CustomUser`).
+  - `siguiendo`: Usuario seguido (clave foránea a `CustomUser`).
+
+### 3. Like (`Like`)
+
+- Modelo para gestionar los "me gusta" en las publicaciones.
+- Campos:
+  - `usuario`: Usuario que dio el "like" (clave foránea a `CustomUser`).
+  - `post`: Publicación a la que se le dio el "like" (clave foránea a `Post`).
+  - `fecha`: Fecha y hora de la acción (automática).
+
+### 4. Publicación (`Post`)
+
+- Modelo que representa las publicaciones de los usuarios.
+- Campos:
+  - `autor`: Autor de la publicación (clave foránea a `CustomUser`).
+  - `contenido`: Contenido de la publicación (texto).
+  - `fecha`: Fecha y hora de creación de la publicación (automática).
+  - `likes`: Relación con usuarios que dieron "like" a la publicación (a través del modelo `Like`).
+
+## Características clave:
 
 1. **Nueva publicación:**
    - Los usuarios pueden realizar nuevas publicaciones mediante un área de texto y un botón de envío.

@@ -5,6 +5,9 @@
 {% block content %}
 
 <div class="container-fluid border rounded p-4">
+    {% if mensaje %}
+        <h4 class="text-card">{{ mensaje }}</h4>
+    {% endif %}
     <form action="{% url 'new' %}" method="POST">
         {% csrf_token %}
         <h2 class="mt-4 mb-3">Nueva publicación</h2>

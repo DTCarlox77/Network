@@ -149,6 +149,7 @@ def following(request):
 # Vista para hacer una publicación, acá son visibles todas las publicaciones que uno mismo hizo.
 @login_required
 def new_post(request):
+    mensaje = None
     
     if request.method == 'POST':
         
@@ -157,8 +158,11 @@ def new_post(request):
         
         nueva_publicacion = Post(autor=autor, contenido=contenido)
         nueva_publicacion.save()
+        mensaje = 'Se ha agregado tu post'
         
-    return render(request, 'new.html')
+    return render(request, 'new.html', {
+        'mensaje' : mensaje
+    })
 
 # Perfil propio o de otros usuarios.
 def profile(request, username):

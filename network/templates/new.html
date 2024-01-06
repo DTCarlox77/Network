@@ -6,7 +6,7 @@
 
 <div class="container-fluid border rounded p-4">
     {% if mensaje %}
-        <h4 class="text-card">{{ mensaje }}</h4>
+        <h6 class="text-card">{{ mensaje }}</h6>
     {% endif %}
     <form action="{% url 'new' %}" method="POST">
         {% csrf_token %}

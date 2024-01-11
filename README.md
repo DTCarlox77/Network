@@ -95,7 +95,7 @@ Bienvenido a Network, una red social dinámica y moderna diseñada para conectar
 
 - **db.sqlite3**: Base de datos precreada en SQLite 3 para gestionar toda la información.
 
-## Ejecución de la aplicación.
+## Ejecución de la aplicación
 
 1. Asegúrate de tener Python 3.11 instalado en tu sistema.
 
@@ -105,13 +105,25 @@ Bienvenido a Network, una red social dinámica y moderna diseñada para conectar
    pip install -r requirements.txt
    ```
 
-3. Desde la ruta raíz, ejecuta el siguiente comando:
+3. Desde la ruta raíz, ejecuta el siguiente comando para aplicar las migraciones:
+
+   ```
+   python manage.py migrate
+   ```
+
+4. Crea un superusuario para acceder a la interfaz de administración:
+
+   ```
+   python manage.py createsuperuser
+   ```
+
+5. Inicia el servidor web Django:
 
    ```
    python manage.py runserver
    ```
 
-4. Abre tu navegador web y accede a `http://localhost:8000` para comenzar a usar la aplicación.
+6. Abre tu navegador web y accede a `http://localhost:8000` para comenzar a usar la aplicación.
 
 ## Notas Adicionales
 

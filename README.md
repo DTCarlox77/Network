@@ -75,7 +75,7 @@ Bienvenido a Network, una red social dinámica y moderna diseñada para conectar
 
 ## Video tutorial
 
-   **Youtube**: "Próximamente"
+   **Youtube**: https://youtu.be/U7FnXeSqBvE?si=gYo-J2l3jinLqObh
 
 ## Estructura de Archivos de la Aplicación
 
